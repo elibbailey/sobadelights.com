@@ -132,22 +132,33 @@ body{transition:background-color .55s ease,color .55s ease}
 .fx .is-signal path{fill:var(--signal)}
 .drop{top:-22vh;left:var(--x);animation:fall var(--dur) cubic-bezier(.3,.05,.7,1) var(--delay) both}
 .spark{left:50%;top:100%;margin-left:calc(var(--s) / -2);animation:spark var(--dur) var(--delay) both}
-.fx-belt::before{content:"";position:absolute;left:0;right:0;bottom:36vh;height:1px;background:var(--paper-line);animation:beltline 8s ease both}
-.belt-item{left:100vw;bottom:calc(36vh - var(--s) * .08);animation:belt 4.4s linear var(--delay) both}
-.fx-orbit{inset:auto;overflow:visible}
-.moon{left:50%;top:50%;margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);animation:orbit var(--dur) cubic-bezier(.45,0,.2,1) both,fadeinout var(--dur) linear both}
-.fx-monolith{z-index:0}
-.giant{left:50%;bottom:0;width:78vmin;height:78vmin;margin-left:-39vmin;opacity:.16;animation:giant 4.2s cubic-bezier(.2,.7,.2,1) both}
-.giant path{fill:var(--paper)}
 .pop{left:var(--x);top:var(--y);animation:fadeinout 1.8s ease var(--delay) both}
 .obj.hop{animation:hop .75s cubic-bezier(.2,.8,.2,1)}
+/* the letters fall away, a word stays */
+.h1 .w{white-space:nowrap}
+.h1 .ch{display:inline-block;transition:color .4s ease}
+.h1 .ch.keep{color:var(--signal);transition-delay:.7s}
+.h1 .ch.fall{animation:letterfall 1.15s cubic-bezier(.45,0,.85,.35) var(--d) both}
+.h1 .ch.back{animation:letterback .55s cubic-bezier(.2,.7,.2,1) both}
+.lede,.actions{transition:opacity .5s ease}
+.is-falling .lede,.is-falling .actions{opacity:0}
+/* the thing crowds everyone out */
+.wordmark{display:inline-block}
+.stage,.copy,.wordmark,.top-tag,.top-link,.foot,.plinth{transition:transform .95s cubic-bezier(.34,1.25,.4,1),opacity .6s ease}
+.is-crowded{overflow:hidden}
+.is-crowded .stagewrap{position:relative;z-index:3}
+.is-crowded .stage{transform:translate(var(--cx),var(--cy)) scale(var(--grow))}
+.is-crowded .copy{transform:translate3d(-75vw,0,0)}
+.is-crowded .wordmark{transform:translate3d(-45vw,0,0)}
+.is-crowded .top-tag{transform:translate3d(0,-30vh,0)}
+.is-crowded .top-link{transform:translate3d(45vw,0,0)}
+.is-crowded .foot{transform:translate3d(0,35vh,0)}
+.is-crowded .plinth{transform:translate3d(0,45vh,0);opacity:0}
 @keyframes fall{from{transform:translate3d(0,0,0) rotate(0deg)}to{transform:translate3d(var(--drift),135vh,0) rotate(var(--r))}}
 @keyframes spark{0%{transform:translate3d(0,0,0) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.1,.7,.4,1)}58%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--r));opacity:1;animation-timing-function:cubic-bezier(.5,0,.9,.4)}100%{transform:translate3d(calc(var(--dx) * 1.25),25vh,0) rotate(calc(var(--r) * 1.5));opacity:0}}
-@keyframes belt{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(-100vw - var(--s) - 20px),0,0)}}
-@keyframes beltline{0%{opacity:0}8%{opacity:1}92%{opacity:1}100%{opacity:0}}
-@keyframes orbit{from{transform:rotate(var(--a)) translateX(var(--rad)) rotate(calc(var(--a) * -1))}to{transform:rotate(calc(var(--a) + 360deg)) translateX(var(--rad)) rotate(calc((var(--a) + 360deg) * -1))}}
 @keyframes fadeinout{0%{opacity:0}14%{opacity:1}86%{opacity:1}100%{opacity:0}}
-@keyframes giant{0%{transform:translate3d(0,100%,0)}42%{transform:translate3d(0,10%,0)}62%{transform:translate3d(0,10%,0)}100%{transform:translate3d(0,100%,0)}}
+@keyframes letterfall{to{transform:translate3d(var(--dx),110vh,0) rotate(var(--r));opacity:.9}}
+@keyframes letterback{from{transform:translate3d(0,-40px,0);opacity:0}to{transform:none;opacity:1}}
 @keyframes hop{0%{transform:translateY(0)}35%{transform:translateY(-4%) scale(1.03,1.06)}70%{transform:translateY(0) scale(1.02,.97)}100%{transform:none}}
 
 /* motion */
@@ -176,6 +187,8 @@ body{transition:background-color .55s ease,color .55s ease}
   .cta,.cta span,.caption{transition:none}
   .obj.hop{animation:none}
   html,body,.shape{transition:none}
+  .h1 .ch.fall{animation:none;opacity:0;transition:opacity .5s ease}
+  .h1 .ch.back{animation:none}
 }
 </style>
 </head>
@@ -357,16 +370,47 @@ body{transition:background-color .55s ease,color .55s ease}
   let clicks = 0, chipTimer = null, bag = [], last = null;
 
   const layer = cls => { const d = document.createElement('div'); d.className = 'fx ' + cls; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); return d; };
-  const thing = (parent, cls, vars, signal) => {
+  const thing = (parent, cls, vars) => {
     const el = document.createElementNS(NS, 'svg');
     el.setAttribute('viewBox', '0 0 100 100');
-    el.setAttribute('class', cls + (signal !== false && Math.random() < .18 ? ' is-signal' : ''));
+    el.setAttribute('class', cls + (Math.random() < .18 ? ' is-signal' : ''));
     const p = document.createElementNS(NS, 'path'); p.setAttribute('d', toPath(pick().pts)); el.appendChild(p);
     for (const k in vars) el.style.setProperty('--' + k, vars[k]);
     parent.appendChild(el); return el;
   };
   const clear = (el, ms) => setTimeout(() => el.remove(), ms);
   const hop = () => { if (reduce) return; obj.classList.remove('hop'); void obj.offsetWidth; obj.classList.add('hop'); };
+
+  // Every letter of the headline gets its own span so it can fall on its own.
+  const h1 = document.querySelector('.h1');
+  (function wrap(node) {
+    [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const part of n.textContent.split(/(\s+)/)) {
+          if (!part) continue;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); continue; }
+          const w = document.createElement('span'); w.className = 'w';
+          for (const ch of part) { const sp = document.createElement('span'); sp.className = 'ch'; sp.textContent = ch; w.appendChild(sp); }
+          frag.appendChild(w);
+        }
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1 && n.tagName !== 'BR') wrap(n);
+    });
+  })(h1);
+  const letters = [...h1.querySelectorAll('.ch')];
+  const WORDS = ['soon', 'brew', 'wok', 'brie', 'shrink', 'grin', 'hero', 'wink'];
+  const keepFor = word => {   // letters of the headline, in order, that spell the word
+    const out = []; let p = 0;
+    for (const c of word) {
+      while (p < letters.length && letters[p].textContent.toLowerCase() !== c) p++;
+      if (p >= letters.length) return null;
+      out.push(p); p++;
+    }
+    return out;
+  };
+  const words = WORDS.filter(w => keepFor(w));
+  let wordBag = [];
 
   const delights = {
     rain() {                       // it rains things
@@ -378,17 +422,6 @@ body{transition:background-color .55s ease,color .55s ease}
       const L = layer('fx-fountain');
       for (let i = 0; i < 32; i++) thing(L, 'spark', { dx: Math.round(rnd(-46, 46)) + 'vw', dy: Math.round(-rnd(30, 96)) + 'vh', s: Math.round(rnd(22, 68)) + 'px', dur: rnd(1.7, 2.7).toFixed(2) + 's', delay: rnd(0, .35).toFixed(2) + 's', r: Math.round(rnd(-720, 720)) + 'deg' });
       clear(L, 3600); hop();
-    },
-    conveyor() {                   // the production line rolls past
-      const L = layer('fx-belt');
-      for (let i = 0; i < 14; i++) thing(L, 'belt-item', { s: Math.round(rnd(60, 120)) + 'px', delay: (i * .24).toFixed(2) + 's' });
-      clear(L, 8200);
-    },
-    orbit() {                      // things orbit the thing
-      const r = stage.getBoundingClientRect(), L = layer('fx-orbit');
-      Object.assign(L.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
-      for (let i = 0; i < 9; i++) thing(L, 'moon', { a: Math.round(i * 40 + rnd(-8, 8)) + 'deg', rad: Math.round(r.width * rnd(.5, .62)) + 'px', s: Math.round(rnd(30, 62)) + 'px', dur: '3.2s' });
-      clear(L, 3400); hop();
     },
     flip() {                       // the whole page turns inside out
       document.documentElement.classList.add('is-flipped');
@@ -405,10 +438,30 @@ body{transition:background-color .55s ease,color .55s ease}
       };
       step();
     },
-    monolith() {                   // something enormous passes behind the page
-      const L = layer('fx-monolith');
-      thing(L, 'giant', {}, false);
-      clear(L, 4400);
+    fall() {                       // the letters fall away; a word stays behind
+      if (!wordBag.length) wordBag = words.slice().sort(() => Math.random() - .5);
+      const keep = new Set(keepFor(wordBag.pop()));
+      document.body.classList.add('is-falling');
+      letters.forEach((el, i) => {
+        if (keep.has(i)) { el.classList.add('keep'); return; }
+        el.style.setProperty('--d', rnd(0, .75).toFixed(2) + 's');
+        el.style.setProperty('--dx', Math.round(rnd(-90, 90)) + 'px');
+        el.style.setProperty('--r', Math.round(rnd(-220, 220)) + 'deg');
+        el.classList.add('fall');
+      });
+      setTimeout(() => {
+        letters.forEach(el => { el.classList.remove('fall', 'keep'); el.classList.add('back'); });
+        document.body.classList.remove('is-falling');
+        setTimeout(() => letters.forEach(el => el.classList.remove('back')), 800);
+      }, 3800);
+    },
+    crowd() {                      // the thing gets enormous and shoves everything off the page
+      const r = stage.getBoundingClientRect(), bs = document.body.style;
+      bs.setProperty('--grow', (Math.max(innerWidth, innerHeight) * 1.6 / r.width).toFixed(2));
+      bs.setProperty('--cx', Math.round(innerWidth / 2 - (r.left + r.width / 2)) + 'px');
+      bs.setProperty('--cy', Math.round(innerHeight / 2 - (r.top + r.height / 2)) + 'px');
+      document.body.classList.add('is-crowded');
+      setTimeout(() => document.body.classList.remove('is-crowded'), 2300);
     },
     pop() {                        // the calm one: things appear, then leave
       const L = layer('fx-pop');
@@ -416,7 +469,7 @@ body{transition:background-color .55s ease,color .55s ease}
       clear(L, 2800);
     }
   };
-  const menu = reduce ? ['pop', 'flip'] : ['rain', 'fountain', 'conveyor', 'orbit', 'flip', 'flipbook', 'monolith'];
+  const menu = reduce ? ['pop', 'flip', 'fall'] : ['rain', 'fountain', 'flip', 'flipbook', 'fall', 'crowd'];
 
   function delight() {
     if (!bag.length) {
