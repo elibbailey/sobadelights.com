@@ -9,14 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Azeret+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 /* Source for og.png: render this page at 1200×630 and screenshot the card. */
-:root{--blue:#1b2ae8;--paper:#f6b976;--signal:#ff6a3d}
+:root{--blue:#1b2ae8;--paper:#f8d5a5;--signal:#ff6a3d}
 html,body{margin:0;background:var(--blue)}
 .card{position:relative;width:1200px;height:630px;overflow:hidden;background:var(--blue);color:var(--paper);font-family:"Syne",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 .mark{position:absolute;left:64px;top:56px;font-weight:800;font-size:44px;letter-spacing:-.03em}
-.tag{position:absolute;right:64px;top:66px;font-family:"Azeret Mono",ui-monospace,monospace;font-weight:500;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:rgba(246,185,118,.85)}
+.tag{position:absolute;right:64px;top:66px;font-family:"Azeret Mono",ui-monospace,monospace;font-weight:500;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:rgba(248,213,165,.85)}
 .h1{position:absolute;left:64px;top:196px;width:760px;font-weight:800;font-size:76px;line-height:.95;letter-spacing:-.04em}
 .url{position:absolute;left:64px;bottom:56px;font-family:"Azeret Mono",ui-monospace,monospace;font-weight:500;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
-.chip{position:absolute;right:64px;bottom:56px;font-family:"Azeret Mono",ui-monospace,monospace;font-weight:500;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:rgba(246,185,118,.85)}
+.chip{position:absolute;right:64px;bottom:56px;font-family:"Azeret Mono",ui-monospace,monospace;font-weight:500;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:rgba(248,213,165,.85)}
 .chip i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--signal);margin-right:12px;vertical-align:-1px}
 svg{position:absolute;right:64px;top:126px;width:360px;height:360px;overflow:visible}
 .shape{fill:var(--paper)}.shadow{fill:rgba(0,0,0,.3)}
@@ -49,20 +49,20 @@ window.renderCard = async () => {
   const W = 1200, H = 630, c = document.createElement('canvas'); c.width = W * 2; c.height = H * 2;
   const x = c.getContext('2d'); x.scale(2, 2);
   x.fillStyle = '#1b2ae8'; x.fillRect(0, 0, W, H);
-  x.fillStyle = '#f6b976'; x.textBaseline = 'top';
+  x.fillStyle = '#f8d5a5'; x.textBaseline = 'top';
   x.font = '800 44px Syne'; x.letterSpacing = '-1.3px'; x.fillText('SOBA', 64, 56);
-  x.font = '500 18px "Azeret Mono"'; x.letterSpacing = '1.4px'; x.textAlign = 'right'; x.fillStyle = 'rgba(246,185,118,.85)';
+  x.font = '500 18px "Azeret Mono"'; x.letterSpacing = '1.4px'; x.textAlign = 'right'; x.fillStyle = 'rgba(248,213,165,.85)';
   x.fillText('MAKERS OF INTERESTING CONSUMER GOODS', W - 64, 66);
-  x.textAlign = 'left'; x.fillStyle = '#f6b976'; x.font = '800 76px Syne'; x.letterSpacing = '-3px';
+  x.textAlign = 'left'; x.fillStyle = '#f8d5a5'; x.font = '800 76px Syne'; x.letterSpacing = '-3px';
   ['The shelf is', 'boring. We’re', 'working on it.'].forEach((l, i) => x.fillText(l, 64, 196 + i * 72));
   x.textBaseline = 'bottom'; x.font = '500 20px "Azeret Mono"'; x.letterSpacing = '1.6px'; x.fillText('SOBADELIGHTS.COM', 64, H - 56);
-  x.font = '500 18px "Azeret Mono"'; x.letterSpacing = '1.4px'; x.textAlign = 'right'; x.fillStyle = 'rgba(246,185,118,.85)';
+  x.font = '500 18px "Azeret Mono"'; x.letterSpacing = '1.4px'; x.textAlign = 'right'; x.fillStyle = 'rgba(248,213,165,.85)';
   const chip = 'DELIGHT PENDING'; x.fillText(chip, W - 64, H - 56);
   const cw = x.measureText(chip).width; x.fillStyle = '#ff6a3d'; x.beginPath(); x.arc(W - 64 - cw - 18, H - 56 - 11, 6, 0, Math.PI * 2); x.fill();
   const d = document.getElementById('shape').getAttribute('d'), box = 360, ox = W - 64 - box, oy = 126, k = box / 100;
   x.save(); x.translate(ox, oy); x.scale(k, k);
   x.fillStyle = 'rgba(0,0,0,.3)'; x.beginPath(); x.ellipse(50, 93.6, 30, 2.4, 0, 0, Math.PI * 2); x.fill();
-  x.fillStyle = '#f6b976'; x.fill(new Path2D(d)); x.restore();
+  x.fillStyle = '#f8d5a5'; x.fill(new Path2D(d)); x.restore();
   return new Promise(res => c.toBlob(res, 'image/png'));
 };
 window.postTo = async (blob, name) => { const r = await fetch('http://127.0.0.1:8766/save', { method: 'POST', headers: { 'X-Name': name, 'Content-Type': 'image/png' }, body: blob }); return r.status + ' ' + name + ' ' + blob.size + ' bytes'; };
