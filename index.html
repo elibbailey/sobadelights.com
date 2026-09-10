@@ -34,6 +34,7 @@
   --display:"Syne",system-ui,sans-serif;
   --body:"Instrument Sans",system-ui,-apple-system,sans-serif;
   --mono:"Azeret Mono",ui-monospace,Menlo,monospace;
+  --pad:clamp(18px,2.6vw,36px);
 }
 *{box-sizing:border-box}
 html{background:var(--blue)}
@@ -47,7 +48,7 @@ a{color:inherit}
 
 .page{
   min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;
-  padding:clamp(18px,2.6vw,36px);gap:clamp(24px,4vh,56px);
+  padding:var(--pad);gap:clamp(24px,4vh,56px);
 }
 
 /* top bar */
@@ -177,6 +178,8 @@ body{transition:background-color .55s ease,color .55s ease}
 @keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.4px)}}
 
 @media (max-width:900px){
+  .top{position:sticky;top:0;z-index:5;background:var(--blue);margin:calc(-1 * var(--pad)) calc(-1 * var(--pad)) 0;padding:var(--pad) var(--pad) 14px;transition:background-color .55s ease}
+  .is-crowded .top{z-index:0}
   .hero{grid-template-columns:1fr;align-content:start;gap:36px}
   .top-tag{display:none}
   .stagewrap{max-width:min(380px,100%)}
@@ -516,6 +519,23 @@ body{transition:background-color .55s ease,color .55s ease}
   };
   const menu = reduce ? ['pop', 'flip', 'fall'] : ['rain', 'fountain', 'flip', 'flipbook', 'fall', 'crowd'];
 
+  // On phones the object and the headline are rarely on screen together, so each delight
+  // first scrolls to the part of the page it plays on: the headline for the falling letters,
+  // the object for the flipbook and the growth. The viewport-wide ones run where you are.
+  const phone = matchMedia('(max-width:900px)');
+  function bring(name, run) {
+    if (!phone.matches || reduce) { run(); return; }
+    let target = null;
+    if (name === 'fall') target = 0;
+    else if (name === 'flipbook' || name === 'crowd') {
+      const bar = document.querySelector('.top').getBoundingClientRect().height;
+      target = stage.getBoundingClientRect().top + scrollY - bar - 12;
+    }
+    if (target === null || Math.abs(scrollY - target) < 24) { run(); return; }
+    scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+    setTimeout(run, 450);
+  }
+
   function delight() {
     if (!bag.length) {
       bag = menu.slice().sort(() => Math.random() - .5);
@@ -523,14 +543,14 @@ body{transition:background-color .55s ease,color .55s ease}
       if (clicks === 0 && !reduce) { bag = bag.filter(m => m !== 'rain'); bag.push('rain'); }
     }
     last = bag.pop();
-    delights[last]();
+    bring(last, () => delights[last]());
     chipText.textContent = 'delight delivered'; chip.classList.add('is-done');
     clearTimeout(chipTimer);
     chipTimer = setTimeout(() => { chipText.textContent = 'delight pending'; chip.classList.remove('is-done'); }, 3800);
     btn.textContent = labels[clicks % labels.length]; clicks++;
   }
   btn.addEventListener('click', delight);
-  window.__delight = (name, arg) => delights[name] && delights[name](arg);   // dev hook: __delight('fall', 'sweet')
+  window.__delight = (name, arg) => delights[name] && bring(name, () => delights[name](arg));   // dev hook: __delight('fall', 'sweet')
   document.addEventListener('visibilitychange', () => { if (document.hidden) clearTimeout(timer); else schedule(); });
   schedule();
 })();
