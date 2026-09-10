@@ -136,34 +136,36 @@ body{transition:background-color .55s ease,color .55s ease}
 .obj.hop{animation:hop .75s cubic-bezier(.2,.8,.2,1)}
 /* the letters fall away, a word stays */
 .h1 .w{white-space:nowrap}
-.h1 .ch{display:inline-block;transition:color .4s ease}
-.h1 .ch.keep{color:var(--signal);transition-delay:.7s}
-.h1 .ch.fall{animation:letterfall 1.15s cubic-bezier(.45,0,.85,.35) var(--d) both}
-.h1 .ch.back{animation:letterback .55s cubic-bezier(.2,.7,.2,1) both}
-.lede,.actions{transition:opacity .5s ease}
-.is-falling .lede,.is-falling .actions{opacity:0}
+.h1 .ch{display:inline-block;will-change:transform;transition:transform 1.1s cubic-bezier(.2,.75,.25,1) var(--dback,0s),opacity .35s ease var(--dback,0s),color .4s ease 0s}
+.h1 .ch.keep{color:var(--signal);transition-delay:var(--dback,0s),var(--dback,0s),.7s}
+.h1 .ch.gather{text-transform:lowercase;transition:transform .8s cubic-bezier(.3,.8,.2,1) 0s,color .4s ease 0s}
+.h1{position:relative}
+.h1 .qmark{position:absolute;left:0;top:0;color:var(--signal);opacity:0;transition:opacity .4s ease .6s}
+.h1 .qmark.is-in{opacity:1}
+.h1 .ch.fall{transform:translate3d(var(--dx),110vh,0) rotate(var(--r));opacity:.85;transition:transform 1.3s cubic-bezier(.55,0,.9,.6) var(--d),opacity .4s ease calc(var(--d) + .9s)}
+.lede,.actions{transition:transform 1.1s cubic-bezier(.2,.75,.25,1) .05s,opacity .35s ease}
+.is-falling .lede{transform:translate3d(-30px,110vh,0) rotate(-4deg);transition:transform 1.3s cubic-bezier(.55,0,.9,.6) .35s}
+.is-falling .actions{transform:translate3d(30px,110vh,0) rotate(5deg);transition:transform 1.3s cubic-bezier(.55,0,.9,.6) .5s}
 /* the thing crowds everyone out */
 .wordmark{display:inline-block}
-.stage,.copy,.wordmark,.top-tag,.top-link,.foot,.plinth{transition:transform .95s cubic-bezier(.34,1.25,.4,1),opacity .6s ease}
-.is-crowded{overflow:hidden}
+.stage{transition:transform 1.1s cubic-bezier(.3,.7,.2,1)}
+.copy,.wordmark,.top-tag,.top-link,.foot,.plinth{transition:transform 1.1s cubic-bezier(.2,.75,.25,1) .1s,color .15s ease,border-color .15s ease}
+.no-scroll,.no-scroll body{overflow:hidden}
 .is-crowded .stagewrap{position:relative;z-index:3}
-.is-crowded .stage{transform:translate(var(--cx),var(--cy)) scale(var(--grow))}
-.is-crowded .copy{transform:translate3d(-75vw,0,0)}
-.is-crowded .wordmark{transform:translate3d(-45vw,0,0)}
-.is-crowded .top-tag{transform:translate3d(0,-30vh,0)}
-.is-crowded .top-link{transform:translate3d(45vw,0,0)}
-.is-crowded .foot{transform:translate3d(0,35vh,0)}
-.is-crowded .plinth{transform:translate3d(0,45vh,0);opacity:0}
+.is-crowded .stage{transform:translate(var(--cx),var(--cy)) scale(var(--grow));transition:transform 1.9s cubic-bezier(.6,0,.3,1)}
+.is-crowded .copy,.is-crowded .wordmark,.is-crowded .top-tag,.is-crowded .top-link,.is-crowded .foot,.is-crowded .plinth{transition:transform 1.6s cubic-bezier(.6,0,.3,1) .25s}
+.is-crowded .copy,.is-crowded .wordmark{transform:translate3d(-110vw,0,0)}
+.is-crowded .top-tag{transform:translate3d(0,-110vh,0)}
+.is-crowded .top-link{transform:translate3d(110vw,0,0)}
+.is-crowded .foot,.is-crowded .plinth{transform:translate3d(0,110vh,0)}
 @keyframes fall{from{transform:translate3d(0,0,0) rotate(0deg)}to{transform:translate3d(var(--drift),135vh,0) rotate(var(--r))}}
 @keyframes spark{0%{transform:translate3d(0,0,0) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.1,.7,.4,1)}58%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--r));opacity:1;animation-timing-function:cubic-bezier(.5,0,.9,.4)}100%{transform:translate3d(calc(var(--dx) * 1.25),25vh,0) rotate(calc(var(--r) * 1.5));opacity:0}}
 @keyframes fadeinout{0%{opacity:0}14%{opacity:1}86%{opacity:1}100%{opacity:0}}
-@keyframes letterfall{to{transform:translate3d(var(--dx),110vh,0) rotate(var(--r));opacity:.9}}
-@keyframes letterback{from{transform:translate3d(0,-40px,0);opacity:0}to{transform:none;opacity:1}}
 @keyframes hop{0%{transform:translateY(0)}35%{transform:translateY(-4%) scale(1.03,1.06)}70%{transform:translateY(0) scale(1.02,.97)}100%{transform:none}}
 
 /* motion */
-.reveal{opacity:0;transform:translateY(14px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0ms)}
-@keyframes rise{to{opacity:1;transform:none}}
+.reveal{animation:rise .9s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:var(--d,0ms)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.55);opacity:.5}}
 @keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.4px)}}
 
@@ -182,13 +184,13 @@ body{transition:background-color .55s ease,color .55s ease}
   .stagewrap{max-width:min(440px,100%)}
 }
 @media (prefers-reduced-motion:reduce){
-  .reveal{animation:none;opacity:1;transform:none}
+  .reveal{animation:none}
   .dot,.shape{animation:none}
   .cta,.cta span,.caption{transition:none}
   .obj.hop{animation:none}
   html,body,.shape{transition:none}
-  .h1 .ch.fall{animation:none;opacity:0;transition:opacity .5s ease}
-  .h1 .ch.back{animation:none}
+  .h1 .ch,.h1 .ch.fall,.h1 .ch.gather,.lede,.actions{transition:opacity .5s ease}
+  .h1 .ch.fall,.is-falling .lede,.is-falling .actions{transform:none;opacity:0}
 }
 </style>
 </head>
@@ -399,7 +401,7 @@ body{transition:background-color .55s ease,color .55s ease}
     });
   })(h1);
   const letters = [...h1.querySelectorAll('.ch')];
-  const WORDS = ['soon', 'brew', 'wok', 'brie', 'shrink', 'grin', 'hero', 'wink'];
+  const WORDS = ['sleek', 'sweet', 'herring', 'swig', 'tin'];
   const keepFor = word => {   // letters of the headline, in order, that spell the word
     const out = []; let p = 0;
     for (const c of word) {
@@ -438,30 +440,56 @@ body{transition:background-color .55s ease,color .55s ease}
       };
       step();
     },
-    fall() {                       // the letters fall away; a word stays behind
+    fall(word) {                   // the letters fall away; a word stays behind and gathers itself
       if (!wordBag.length) wordBag = words.slice().sort(() => Math.random() - .5);
-      const keep = new Set(keepFor(wordBag.pop()));
+      const keep = keepFor(word || wordBag.pop()) || [], keepSet = new Set(keep);
+      document.documentElement.classList.add('no-scroll');   // fallen letters must not grow the page or summon a scrollbar
       document.body.classList.add('is-falling');
       letters.forEach((el, i) => {
-        if (keep.has(i)) { el.classList.add('keep'); return; }
-        el.style.setProperty('--d', rnd(0, .75).toFixed(2) + 's');
+        el.style.setProperty('--dback', rnd(0, .5).toFixed(2) + 's');
+        if (keepSet.has(i)) { el.classList.add('keep'); return; }
+        el.style.setProperty('--d', rnd(0, .7).toFixed(2) + 's');
         el.style.setProperty('--dx', Math.round(rnd(-90, 90)) + 'px');
         el.style.setProperty('--r', Math.round(rnd(-220, 220)) + 'deg');
         el.classList.add('fall');
       });
-      setTimeout(() => {
-        letters.forEach(el => { el.classList.remove('fall', 'keep'); el.classList.add('back'); });
+      setTimeout(() => {                                   // survivors slide together into the word
+        keep.forEach(i => { const el = letters[i]; el.style.width = el.getBoundingClientRect().width + 'px'; });   // freeze widths so lowercasing never reflows the line
+        keep.forEach(i => letters[i].classList.add('gather'));
+        void h1.offsetWidth;
+        const q = document.createElement('span'); q.className = 'ch qmark'; q.textContent = '?'; h1.appendChild(q);
+        const box = h1.getBoundingClientRect(), rects = keep.map(i => letters[i].getBoundingClientRect());
+        const qw = q.getBoundingClientRect().width;
+        const h = Math.max(...rects.map(r => r.height)), total = rects.reduce((sum, r) => sum + r.width, 0) + qw;
+        const gap = Math.max(0, Math.min(parseFloat(getComputedStyle(h1).fontSize) * .55, (box.width - total) / rects.length));
+        let x = box.left; const y = box.top + (box.height - h) / 2;
+        keep.forEach((i, k) => {                           // spaced well apart, tighter only if the column is narrow
+          const el = letters[i], r = rects[k];
+          el.style.transform = 'translate(' + (x - r.left).toFixed(1) + 'px,' + (y - r.top).toFixed(1) + 'px)';
+          x += r.width + gap;
+        });
+        const qr = q.getBoundingClientRect();
+        q.style.transform = 'translate(' + (x - qr.left).toFixed(1) + 'px,' + (y - qr.top).toFixed(1) + 'px)';
+        void q.offsetWidth; q.classList.add('is-in');
+      }, reduce ? 600 : 2100);
+      setTimeout(() => {                                   // everything rises back into place
         document.body.classList.remove('is-falling');
-        setTimeout(() => letters.forEach(el => el.classList.remove('back')), 800);
-      }, 3800);
+        letters.forEach(el => { el.classList.remove('fall', 'keep', 'gather'); el.style.transform = ''; el.style.width = ''; });
+        h1.querySelectorAll('.qmark').forEach(q => { q.style.transition = 'opacity .3s ease'; q.classList.remove('is-in'); setTimeout(() => q.remove(), 400); });
+        setTimeout(() => document.documentElement.classList.remove('no-scroll'), 1800);
+      }, reduce ? 3200 : 4700);
     },
-    crowd() {                      // the thing gets enormous and shoves everything off the page
+    crowd() {                      // the thing grows to nearly the height of the screen and shoves everything else off
       const r = stage.getBoundingClientRect(), bs = document.body.style;
-      bs.setProperty('--grow', (Math.max(innerWidth, innerHeight) * 1.6 / r.width).toFixed(2));
+      const grow = Math.min(innerHeight * .9 / (r.height * .84), innerWidth * .92 / (r.width * .82));   // the shape fills 84% of its box tall, up to 82% wide
+      bs.setProperty('--grow', Math.max(1.05, grow).toFixed(2));
       bs.setProperty('--cx', Math.round(innerWidth / 2 - (r.left + r.width / 2)) + 'px');
       bs.setProperty('--cy', Math.round(innerHeight / 2 - (r.top + r.height / 2)) + 'px');
+      clearTimeout(timer);                                 // hold this shape while it is huge
+      document.documentElement.classList.add('no-scroll');
       document.body.classList.add('is-crowded');
-      setTimeout(() => document.body.classList.remove('is-crowded'), 2300);
+      setTimeout(() => document.body.classList.remove('is-crowded'), 2900);
+      setTimeout(() => { document.documentElement.classList.remove('no-scroll'); schedule(); }, 4300);
     },
     pop() {                        // the calm one: things appear, then leave
       const L = layer('fx-pop');
@@ -485,6 +513,7 @@ body{transition:background-color .55s ease,color .55s ease}
     btn.textContent = labels[clicks % labels.length]; clicks++;
   }
   btn.addEventListener('click', delight);
+  window.__delight = (name, arg) => delights[name] && delights[name](arg);   // dev hook: __delight('fall', 'sweet')
   document.addEventListener('visibilitychange', () => { if (document.hidden) clearTimeout(timer); else schedule(); });
   schedule();
 })();
