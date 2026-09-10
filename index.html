@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOBA · interesting consumer goods</title>
+<meta name="description" content="SOBA makes consumer goods that are actually interesting. The shelf is boring. We're working on it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SOBA">
+<meta property="og:title" content="SOBA · interesting consumer goods">
+<meta property="og:description" content="The shelf is boring. We're working on it.">
+<meta property="og:url" content="https://sobadelights.com/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#1b2ae8">
+<link rel="canonical" href="https://sobadelights.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231b2ae8'/%3E%3Cpath d='M26 14h12v6h-1v5l6 6v22l-3 3H24l-3-3V31l6-6v-5h-1z' fill='%23f6f0e1'/%3E%3Ccircle cx='50' cy='16' r='6' fill='%23ff6a3d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Sans:ital,wght@0,400;0,500;1,400&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1b2ae8;
+  --paper:#f6f0e1;
+  --paper-dim:rgba(246,240,225,.74);
+  --paper-line:rgba(246,240,225,.28);
+  --signal:#ff6a3d;
+  --ink:#0b0f3a;
+  --display:"Syne",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,sans-serif;
+  --mono:"Azeret Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--blue)}
+body{
+  margin:0;background:var(--blue);color:var(--paper);
+  font-family:var(--body);font-size:17px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+a{color:inherit}
+::selection{background:var(--signal);color:var(--ink)}
+
+.page{
+  min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;
+  padding:clamp(18px,2.6vw,36px);gap:clamp(24px,4vh,56px);
+}
+
+/* top bar */
+.top{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;gap:20px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+}
+.top .top-tag{grid-column:2;text-align:center}
+.top .top-link{grid-column:3;justify-self:end}
+.wordmark{
+  font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.03em;
+  line-height:1;text-decoration:none;text-transform:none;
+}
+.top-tag{margin:0;color:var(--paper-dim)}
+.top-link{appearance:none;background:none;border:0;border-bottom:1px solid var(--paper-line);border-radius:0;margin:0;padding:0 0 3px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;transition:color .15s ease,border-color .15s ease}
+.top-link:focus-visible{outline:2px solid var(--signal);outline-offset:6px}
+.top-link:hover{color:var(--signal);border-color:var(--signal)}
+
+/* hero */
+.hero{
+  display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
+  align-items:center;gap:clamp(28px,5vw,88px);
+}
+.h1{
+  margin:0;font-family:var(--display);font-weight:800;
+  font-size:clamp(44px,5vw,88px);line-height:.95;letter-spacing:-.04em;
+}
+.lede{
+  margin:clamp(20px,2.4vw,34px) 0 0;max-width:40ch;
+  font-size:clamp(17px,1.35vw,21px);line-height:1.45;color:var(--paper-dim);
+}
+.lede b{font-weight:500;color:var(--paper)}
+.actions{margin:clamp(24px,3vw,40px) 0 0}
+.cta{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--signal);color:var(--ink);text-decoration:none;
+  font-weight:500;font-size:17px;padding:16px 22px 16px 24px;border-radius:999px;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.28)}
+.cta:active{transform:translateY(0);box-shadow:none}
+.cta:focus-visible{outline:3px solid var(--paper);outline-offset:4px}
+.cta span{transition:transform .18s ease}
+.cta:hover span{transform:translateX(4px)}
+
+/* the thing */
+.stagewrap{display:grid;gap:14px;width:100%;max-width:min(560px,100%);margin-inline:auto}
+.stage{
+  all:unset;display:block;width:100%;aspect-ratio:1;cursor:pointer;border-radius:28px;
+}
+.stage:focus-visible{outline:3px solid var(--signal);outline-offset:8px}
+.obj{width:100%;height:100%;overflow:visible;display:block}
+.shape{fill:var(--paper);animation:breathe 4.5s ease-in-out infinite}
+.shadow{fill:rgba(0,0,0,.30)}
+.plinth{
+  font-family:var(--mono);font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  border-top:1px solid var(--paper-line);padding-top:12px;
+}
+.plinth-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.chip{display:inline-flex;align-items:center;gap:8px;color:var(--paper-dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--signal);animation:pulse 1.6s ease-in-out infinite;transition:background .3s ease}
+.chip.is-done{color:var(--paper)}
+.chip.is-done .dot{animation:none;background:var(--paper)}
+.caption{
+  margin:10px 0 0;font-family:var(--body);text-transform:none;letter-spacing:0;
+  font-size:clamp(18px,1.5vw,23px);font-weight:500;line-height:1.3;
+  transition:opacity .28s ease,transform .28s ease;
+}
+.caption.is-out{opacity:0;transform:translateY(6px)}
+
+/* footer */
+.foot{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--paper-dim);
+}
+.foot-tag{text-align:right}
+
+/* be delighted */
+.page{position:relative;z-index:1}
+html{transition:background-color .55s ease}
+body{transition:background-color .55s ease,color .55s ease}
+.shape{transition:fill .55s ease}
+:root.is-flipped{--blue:#f6f0e1;--paper:#1b2ae8;--paper-dim:rgba(27,42,232,.8);--paper-line:rgba(27,42,232,.3)}
+.fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:10}
+.fx svg{position:absolute;width:var(--s);height:var(--s);will-change:transform,opacity}
+.fx path{fill:var(--paper)}
+.fx .is-signal path{fill:var(--signal)}
+.drop{top:-22vh;left:var(--x);animation:fall var(--dur) cubic-bezier(.3,.05,.7,1) var(--delay) both}
+.spark{left:50%;top:100%;margin-left:calc(var(--s) / -2);animation:spark var(--dur) var(--delay) both}
+.fx-belt::before{content:"";position:absolute;left:0;right:0;bottom:36vh;height:1px;background:var(--paper-line);animation:beltline 8s ease both}
+.belt-item{left:100vw;bottom:calc(36vh - var(--s) * .08);animation:belt 4.4s linear var(--delay) both}
+.fx-orbit{inset:auto;overflow:visible}
+.moon{left:50%;top:50%;margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);animation:orbit var(--dur) cubic-bezier(.45,0,.2,1) both,fadeinout var(--dur) linear both}
+.fx-monolith{z-index:0}
+.giant{left:50%;bottom:0;width:78vmin;height:78vmin;margin-left:-39vmin;opacity:.16;animation:giant 4.2s cubic-bezier(.2,.7,.2,1) both}
+.giant path{fill:var(--paper)}
+.pop{left:var(--x);top:var(--y);animation:fadeinout 1.8s ease var(--delay) both}
+.obj.hop{animation:hop .75s cubic-bezier(.2,.8,.2,1)}
+@keyframes fall{from{transform:translate3d(0,0,0) rotate(0deg)}to{transform:translate3d(var(--drift),135vh,0) rotate(var(--r))}}
+@keyframes spark{0%{transform:translate3d(0,0,0) rotate(0deg);opacity:1;animation-timing-function:cubic-bezier(.1,.7,.4,1)}58%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--r));opacity:1;animation-timing-function:cubic-bezier(.5,0,.9,.4)}100%{transform:translate3d(calc(var(--dx) * 1.25),25vh,0) rotate(calc(var(--r) * 1.5));opacity:0}}
+@keyframes belt{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(-100vw - var(--s) - 20px),0,0)}}
+@keyframes beltline{0%{opacity:0}8%{opacity:1}92%{opacity:1}100%{opacity:0}}
+@keyframes orbit{from{transform:rotate(var(--a)) translateX(var(--rad)) rotate(calc(var(--a) * -1))}to{transform:rotate(calc(var(--a) + 360deg)) translateX(var(--rad)) rotate(calc((var(--a) + 360deg) * -1))}}
+@keyframes fadeinout{0%{opacity:0}14%{opacity:1}86%{opacity:1}100%{opacity:0}}
+@keyframes giant{0%{transform:translate3d(0,100%,0)}42%{transform:translate3d(0,10%,0)}62%{transform:translate3d(0,10%,0)}100%{transform:translate3d(0,100%,0)}}
+@keyframes hop{0%{transform:translateY(0)}35%{transform:translateY(-4%) scale(1.03,1.06)}70%{transform:translateY(0) scale(1.02,.97)}100%{transform:none}}
+
+/* motion */
+.reveal{opacity:0;transform:translateY(14px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0ms)}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.55);opacity:.5}}
+@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.4px)}}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;align-content:start;gap:36px}
+  .top-tag{display:none}
+  .stagewrap{max-width:min(380px,100%)}
+  .foot{flex-direction:column;gap:8px;align-items:flex-start}
+  .foot-tag{text-align:left}
+}
+@media (max-height:760px) and (min-width:901px){
+  .page{gap:20px}
+  .h1{font-size:clamp(40px,4.7vw,74px)}
+  .lede{margin-top:16px}
+  .actions{margin-top:22px}
+  .stagewrap{max-width:min(440px,100%)}
+}
+@media (prefers-reduced-motion:reduce){
+  .reveal{animation:none;opacity:1;transform:none}
+  .dot,.shape{animation:none}
+  .cta,.cta span,.caption{transition:none}
+  .obj.hop{animation:none}
+  html,body,.shape{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top reveal" style="--d:0ms">
+    <a class="wordmark" href="/">SOBA</a>
+    <p class="top-tag">Makers of interesting consumer goods</p>
+    <button class="top-link" type="button" id="delight">Be delighted</button>
+  </header>
+
+  <main class="hero">
+    <div class="copy">
+      <h1 class="h1 reveal" style="--d:80ms">The shelf is boring.<br>We're working on&nbsp;it.</h1>
+      <p class="lede reveal" style="--d:180ms">SOBA makes consumer goods that are actually interesting. Not new-flavor interesting. <b>Interesting interesting.</b> The first ones land soon.</p>
+      <p class="actions reveal" style="--d:260ms"><a class="cta" href="mailto:hey@sobadelights.com?subject=Hi%20SOBA">Say hi<span aria-hidden="true">→</span></a></p>
+    </div>
+
+    <div class="stagewrap reveal" style="--d:140ms">
+      <button class="stage" type="button" id="stage" aria-label="Show another thing SOBA might make" title="Show another">
+        <svg class="obj" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <ellipse class="shadow" id="shadow" cx="50" cy="93.6" rx="22" ry="2.1"/>
+          <path class="shape" id="shape" d="M41 6L59 6L59 14L57 14L57 22L66 32L66 90L62 94L38 94L34 90L34 32L43 22L43 14L41 14Z"/>
+        </svg>
+      </button>
+      <div class="plinth">
+        <div class="plinth-row">
+          <span class="code" id="code">Item 0031</span>
+          <span class="chip" id="chip"><i class="dot" aria-hidden="true"></i><span id="chipText">delight pending</span></span>
+        </div>
+        <p class="caption" id="caption">something for the fridge door</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot reveal" style="--d:320ms">
+    <span>© 2026 SOBA Delights</span>
+    <span class="foot-tag">For people who read the back of the box.</span>
+  </footer>
+</div>
+
+<script>
+(() => {
+  // Things SOBA might make. Each is a closed outline in a 100×100 box; the code
+  // below fits every shape to the same plinth, resamples it to N points and
+  // morphs point-to-point between them.
+  const SHAPES = [
+    {code:'0031', cap:'something for the fridge door',
+     pts:[[41,6],[59,6],[59,14],[57,14],[57,22],[66,32],[66,90],[62,94],[38,94],[34,90],[34,32],[43,22],[43,14],[41,14]]},
+    {code:'0007', cap:'something for the morning',
+     pts:[[22,24],[66,24],[66,34],[76,34],[82,40],[82,62],[76,68],[66,68],[66,84],[60,90],[28,90],[22,84]]},
+    {code:'0001', cap:'something with noodles, obviously',
+     pts:[[14,50],[56,50],[80,6],[84,8],[62,50],[66,50],[90,10],[94,12],[72,50],[86,50],[84,62],[76,80],[64,88],[36,88],[24,80],[16,62]]},
+    {code:'0042', cap:'something for the desk',
+     pts:[[34,10],[66,10],[76,42],[53,42],[53,84],[70,84],[72,88],[70,92],[30,92],[28,88],[30,84],[47,84],[47,42],[24,42]]},
+    {code:'0009', cap:'something cold, for later',
+     pts:[[36,8],[64,8],[70,14],[70,18],[68,22],[68,84],[70,88],[66,92],[34,92],[30,88],[32,84],[32,22],[30,18],[30,14]]},
+    {code:'0058', cap:'something for sitting on, mostly',
+     pts:[[30,8],[38,8],[38,50],[72,50],[72,92],[66,92],[66,56],[36,56],[36,92],[30,92]]},
+    {code:'0047', cap:'something that melts if you wait',
+     pts:[[50,6],[60,8],[68,14],[72,24],[72,34],[70,42],[50,92],[30,42],[28,34],[28,24],[32,14],[40,8]]},
+    {code:'0065', cap:'something alive, allegedly',
+     pts:[[50,6],[60,8],[67,15],[68,25],[62,34],[52,38],[52,56],[70,56],[70,60],[66,60],[62,92],[38,92],[34,60],[30,60],[30,56],[48,56],[48,38],[38,34],[32,25],[33,15],[40,8]]},
+    {code:'0022', cap:'something for the pantry',
+     pts:[[30,14],[70,14],[70,22],[74,26],[76,32],[76,84],[72,90],[28,90],[24,84],[24,32],[26,26],[30,22]]},
+    {code:'0071', cap:'something for the commute',
+     pts:[[72,40],[84,44],[90,54],[90,84],[86,90],[14,90],[8,84],[10,74],[20,68],[36,62],[50,54],[58,44]]},
+    {code:'0079', cap:'something on a stick',
+     pts:[[34,8],[66,8],[70,14],[70,60],[66,66],[54,66],[54,92],[46,92],[46,66],[34,66],[30,60],[30,14]]},
+    {code:'0088', cap:'something that whistles',
+     pts:[[47,8],[53,8],[53,16],[66,22],[78,40],[80,64],[76,88],[24,88],[20,64],[22,44],[6,30],[10,24],[27,35],[34,22],[47,16]]},
+    {code:'0093', cap:'something for your head',
+     pts:[[36,30],[64,30],[70,60],[84,60],[88,66],[84,72],[16,72],[12,66],[16,60],[30,60]]},
+    {code:'0104', cap:'something for the bathroom shelf',
+     pts:[[50,14],[54,24],[51,30],[51,40],[64,40],[66,44],[66,90],[62,94],[38,94],[34,90],[34,44],[36,40],[49,40],[49,30],[46,24]]},
+    {code:'0117', cap:'something for flowers you\'ll buy later',
+     pts:[[40,8],[60,8],[56,20],[70,40],[70,62],[58,90],[42,90],[30,62],[30,40],[44,20]]},
+    {code:'0126', cap:'something for breakfast',
+     pts:[[20,40],[36,40],[36,34],[38,30],[44,30],[46,34],[46,40],[54,40],[54,34],[56,30],[62,30],[64,34],[64,40],[80,40],[84,46],[84,84],[80,88],[20,88],[16,84],[16,46]]},
+    {code:'0133', cap:'something loud, in a good way',
+     pts:[[18,36],[60,36],[82,10],[86,13],[66,36],[82,36],[82,90],[18,90]]},
+  ];
+
+  const N = 200, HOLD = 2600, DUR = 1150;
+  const path = document.getElementById('shape');
+  const shadow = document.getElementById('shadow');
+  const codeEl = document.getElementById('code');
+  const capEl = document.getElementById('caption');
+  const stage = document.getElementById('stage');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const area = p => { let a = 0; for (let i = 0; i < p.length; i++) { const [x1, y1] = p[i], [x2, y2] = p[(i + 1) % p.length]; a += x1 * y2 - x2 * y1; } return a / 2; };
+
+  // Same winding for every shape, same height, feet on the plinth.
+  const normalize = raw => {
+    let p = raw.map(([x, y]) => [x, y]);
+    if (area(p) < 0) p.reverse();
+    const xs = p.map(q => q[0]), ys = p.map(q => q[1]);
+    const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+    const s = Math.min(84 / (maxY - minY), 82 / (maxX - minX));
+    const cx = (minX + maxX) / 2;
+    return p.map(([x, y]) => [50 + (x - cx) * s, 92 - (maxY - y) * s]);
+  };
+
+  // N points evenly spaced along the outline.
+  const resample = (p, n) => {
+    const segs = []; let total = 0;
+    for (let i = 0; i < p.length; i++) { const a = p[i], b = p[(i + 1) % p.length]; const d = Math.hypot(b[0] - a[0], b[1] - a[1]); segs.push(d); total += d; }
+    const out = [], step = total / n; let si = 0, acc = 0;
+    for (let k = 0; k < n; k++) {
+      const target = k * step;
+      while (acc + segs[si] < target && si < p.length - 1) { acc += segs[si]; si++; }
+      const a = p[si], b = p[(si + 1) % p.length];
+      const t = segs[si] ? Math.min(1, (target - acc) / segs[si]) : 0;
+      out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
+    }
+    return out;
+  };
+
+  // Rotate the target's point order so the morph travels the shortest way.
+  const align = (from, to) => {
+    const n = from.length; let best = 0, bestD = Infinity;
+    for (let k = 0; k < n; k++) {
+      let d = 0;
+      for (let i = 0; i < n; i += 4) { const a = from[i], b = to[(i + k) % n]; d += (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2; }
+      if (d < bestD) { bestD = d; best = k; }
+    }
+    return to.map((_, i) => to[(i + best) % n]);
+  };
+
+  const toPath = p => { let d = 'M' + p[0][0].toFixed(2) + ' ' + p[0][1].toFixed(2); for (let i = 1; i < p.length; i++) d += 'L' + p[i][0].toFixed(2) + ' ' + p[i][1].toFixed(2); return d + 'Z'; };
+  const draw = p => {
+    path.setAttribute('d', toPath(p));
+    const feet = p.filter(q => q[1] > 87);
+    if (feet.length) {
+      const xs = feet.map(q => q[0]);
+      shadow.setAttribute('rx', ((Math.max(...xs) - Math.min(...xs)) / 2 + 4).toFixed(1));
+      shadow.setAttribute('cx', ((Math.max(...xs) + Math.min(...xs)) / 2).toFixed(1));
+    }
+  };
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const setLabel = s => { codeEl.textContent = 'Item ' + s.code; capEl.textContent = s.cap; };
+
+  const shapes = SHAPES.map(s => ({ code: s.code, cap: s.cap, pts: resample(normalize(s.pts), N) }));
+  let idx = Math.floor(Math.random() * shapes.length);
+  let cur = shapes[idx].pts, busy = false, timer = null;
+  draw(cur); setLabel(shapes[idx]);
+
+  function schedule() { clearTimeout(timer); timer = setTimeout(next, reduce ? 5000 : HOLD); }
+
+  function morphTo(j, dur, cb) {
+    const target = align(cur, shapes[j].pts);
+    if (reduce || dur === 0) { cur = target; idx = j; draw(cur); setLabel(shapes[j]); if (cb) cb(); return; }
+    busy = true;
+    const from = cur, t0 = performance.now(); let swapped = false;
+    capEl.classList.add('is-out');
+    const frame = now => {
+      const t = Math.min(1, (now - t0) / dur), e = ease(t);
+      draw(from.map((a, i) => [a[0] + (target[i][0] - a[0]) * e, a[1] + (target[i][1] - a[1]) * e]));
+      if (!swapped && t >= .45) { swapped = true; setLabel(shapes[j]); capEl.classList.remove('is-out'); }
+      if (t < 1) requestAnimationFrame(frame);
+      else { cur = target; idx = j; busy = false; if (cb) cb(); }
+    };
+    requestAnimationFrame(frame);
+  }
+  function next() { if (busy) return; morphTo((idx + 1) % shapes.length, DUR, schedule); }
+
+  stage.addEventListener('click', () => { clearTimeout(timer); next(); });
+
+  // Be delighted: a different delight every time.
+  const btn = document.getElementById('delight');
+  const obj = document.querySelector('.obj');
+  const chip = document.getElementById('chip');
+  const chipText = document.getElementById('chipText');
+  const labels = ['Again', 'More', 'Keep going', 'Okay, one more', 'Fine, last one', 'Be delighted'];
+  const NS = 'http://www.w3.org/2000/svg';
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const pick = () => shapes[Math.floor(Math.random() * shapes.length)];
+  let clicks = 0, chipTimer = null, bag = [], last = null;
+
+  const layer = cls => { const d = document.createElement('div'); d.className = 'fx ' + cls; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d); return d; };
+  const thing = (parent, cls, vars, signal) => {
+    const el = document.createElementNS(NS, 'svg');
+    el.setAttribute('viewBox', '0 0 100 100');
+    el.setAttribute('class', cls + (signal !== false && Math.random() < .18 ? ' is-signal' : ''));
+    const p = document.createElementNS(NS, 'path'); p.setAttribute('d', toPath(pick().pts)); el.appendChild(p);
+    for (const k in vars) el.style.setProperty('--' + k, vars[k]);
+    parent.appendChild(el); return el;
+  };
+  const clear = (el, ms) => setTimeout(() => el.remove(), ms);
+  const hop = () => { if (reduce) return; obj.classList.remove('hop'); void obj.offsetWidth; obj.classList.add('hop'); };
+
+  const delights = {
+    rain() {                       // it rains things
+      const L = layer('fx-rain');
+      for (let i = 0; i < 36; i++) thing(L, 'drop', { x: rnd(0, 96).toFixed(1) + 'vw', s: Math.round(rnd(26, 80)) + 'px', dur: rnd(2.4, 4).toFixed(2) + 's', delay: rnd(0, .9).toFixed(2) + 's', drift: Math.round(rnd(-140, 140)) + 'px', r: Math.round(rnd(-540, 540)) + 'deg' });
+      clear(L, 5400); hop();
+    },
+    fountain() {                   // things erupt from the floor
+      const L = layer('fx-fountain');
+      for (let i = 0; i < 32; i++) thing(L, 'spark', { dx: Math.round(rnd(-46, 46)) + 'vw', dy: Math.round(-rnd(30, 96)) + 'vh', s: Math.round(rnd(22, 68)) + 'px', dur: rnd(1.7, 2.7).toFixed(2) + 's', delay: rnd(0, .35).toFixed(2) + 's', r: Math.round(rnd(-720, 720)) + 'deg' });
+      clear(L, 3600); hop();
+    },
+    conveyor() {                   // the production line rolls past
+      const L = layer('fx-belt');
+      for (let i = 0; i < 14; i++) thing(L, 'belt-item', { s: Math.round(rnd(60, 120)) + 'px', delay: (i * .24).toFixed(2) + 's' });
+      clear(L, 8200);
+    },
+    orbit() {                      // things orbit the thing
+      const r = stage.getBoundingClientRect(), L = layer('fx-orbit');
+      Object.assign(L.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+      for (let i = 0; i < 9; i++) thing(L, 'moon', { a: Math.round(i * 40 + rnd(-8, 8)) + 'deg', rad: Math.round(r.width * rnd(.5, .62)) + 'px', s: Math.round(rnd(30, 62)) + 'px', dur: '3.2s' });
+      clear(L, 3400); hop();
+    },
+    flip() {                       // the whole page turns inside out
+      document.documentElement.classList.add('is-flipped');
+      setTimeout(() => document.documentElement.classList.remove('is-flipped'), 2600);
+    },
+    flipbook() {                   // the thing tries on everything
+      clearTimeout(timer);
+      let steps = 9;
+      const step = () => {
+        if (busy) { setTimeout(step, 50); return; }
+        if (steps-- <= 0) { schedule(); return; }
+        let j; do { j = Math.floor(Math.random() * shapes.length); } while (j === idx);
+        morphTo(j, steps ? 150 : 650, step);
+      };
+      step();
+    },
+    monolith() {                   // something enormous passes behind the page
+      const L = layer('fx-monolith');
+      thing(L, 'giant', {}, false);
+      clear(L, 4400);
+    },
+    pop() {                        // the calm one: things appear, then leave
+      const L = layer('fx-pop');
+      for (let i = 0; i < 16; i++) thing(L, 'pop', { x: rnd(2, 90).toFixed(1) + 'vw', y: rnd(6, 84).toFixed(1) + 'vh', s: Math.round(rnd(28, 70)) + 'px', delay: rnd(0, .6).toFixed(2) + 's' });
+      clear(L, 2800);
+    }
+  };
+  const menu = reduce ? ['pop', 'flip'] : ['rain', 'fountain', 'conveyor', 'orbit', 'flip', 'flipbook', 'monolith'];
+
+  function delight() {
+    if (!bag.length) {
+      bag = menu.slice().sort(() => Math.random() - .5);
+      if (bag[bag.length - 1] === last && bag.length > 1) bag.unshift(bag.pop());
+      if (clicks === 0 && !reduce) { bag = bag.filter(m => m !== 'rain'); bag.push('rain'); }
+    }
+    last = bag.pop();
+    delights[last]();
+    chipText.textContent = 'delight delivered'; chip.classList.add('is-done');
+    clearTimeout(chipTimer);
+    chipTimer = setTimeout(() => { chipText.textContent = 'delight pending'; chip.classList.remove('is-done'); }, 3800);
+    btn.textContent = labels[clicks % labels.length]; clicks++;
+  }
+  btn.addEventListener('click', delight);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) clearTimeout(timer); else schedule(); });
+  schedule();
+})();
+</script>
+</body>
+</html>
