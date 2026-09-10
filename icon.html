@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>SOBA icon</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">
+<style>
+/* Source for apple-touch-icon.png: render at 180×180 and screenshot the tile. */
+html,body{margin:0;background:#1b2ae8}
+.tile{width:180px;height:180px;background:#1b2ae8;color:#f6b976;font-family:"Syne",system-ui,sans-serif;font-weight:800;font-size:48px;letter-spacing:-.04em;display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased;position:relative}
+.tile i{position:absolute;right:22px;top:22px;width:16px;height:16px;border-radius:50%;background:#ff6a3d}
+</style>
+</head>
+<body><div class="tile">SOBA<i></i></div>
+<script>
+// How apple-touch-icon.png is made: same tile on a 2x canvas, sent to the local receiver.
+window.renderIcon = async () => {
+  await document.fonts.load('800 48px Syne');
+  const S = 180, c = document.createElement('canvas'); c.width = S * 2; c.height = S * 2;
+  const x = c.getContext('2d'); x.scale(2, 2);
+  x.fillStyle = '#1b2ae8'; x.fillRect(0, 0, S, S);
+  x.fillStyle = '#f6b976'; x.font = '800 48px Syne'; x.letterSpacing = '-1.9px'; x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText('SOBA', S / 2 + 1, S / 2 + 2);
+  x.fillStyle = '#ff6a3d'; x.beginPath(); x.arc(S - 30, 30, 8, 0, Math.PI * 2); x.fill();
+  return new Promise(res => c.toBlob(res, 'image/png'));
+};
+window.postTo = async (blob, name) => { const r = await fetch('http://127.0.0.1:8766/save', { method: 'POST', headers: { 'X-Name': name, 'Content-Type': 'image/png' }, body: blob }); return r.status + ' ' + name + ' ' + blob.size + ' bytes'; };
+</script>
+</body>
+</html>

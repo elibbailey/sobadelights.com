@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>SOBA share card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Azeret+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Source for og.png: render this page at 1200×630 and screenshot the card. */
+:root{--blue:#1b2ae8;--paper:#f6b976;--signal:#ff6a3d}
+html,body{margin:0;background:var(--blue)}
+.card{position:relative;width:1200px;height:630px;overflow:hidden;background:var(--blue);color:var(--paper);font-family:"Syne",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.mark{position:absolute;left:64px;top:56px;font-weight:800;font-size:44px;letter-spacing:-.03em}
+.tag{position:absolute;right:64px;top:66px;font-family:"Azeret Mono",ui-monospace,monospace;font-weight:500;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:rgba(246,185,118,.85)}
+.h1{position:absolute;left:64px;top:196px;width:760px;font-weight:800;font-size:76px;line-height:.95;letter-spacing:-.04em}
+.url{position:absolute;left:64px;bottom:56px;font-family:"Azeret Mono",ui-monospace,monospace;font-weight:500;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
+.chip{position:absolute;right:64px;bottom:56px;font-family:"Azeret Mono",ui-monospace,monospace;font-weight:500;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:rgba(246,185,118,.85)}
+.chip i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--signal);margin-right:12px;vertical-align:-1px}
+svg{position:absolute;right:64px;top:126px;width:360px;height:360px;overflow:visible}
+.shape{fill:var(--paper)}.shadow{fill:rgba(0,0,0,.3)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="mark">SOBA</div>
+  <div class="tag">Makers of interesting consumer goods</div>
+  <div class="h1">The shelf is boring. We're working on it.</div>
+  <svg viewBox="0 0 100 100" aria-hidden="true"><ellipse class="shadow" id="shadow" cx="50" cy="93.6" rx="30" ry="2.4"/><path class="shape" id="shape" d=""/></svg>
+  <div class="url">sobadelights.com</div>
+  <div class="chip"><i></i>delight pending</div>
+</div>
+<script>
+(() => {
+  const raw = [[14,50],[56,50],[80,6],[84,8],[62,50],[66,50],[90,10],[94,12],[72,50],[86,50],[84,62],[76,80],[64,88],[36,88],[24,80],[16,62]]; // item 0001, the noodle bowl
+  const xs = raw.map(q => q[0]), ys = raw.map(q => q[1]);
+  const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+  const s = Math.min(84 / (maxY - minY), 82 / (maxX - minX)), cx = (minX + maxX) / 2;
+  const p = raw.map(([x, y]) => [50 + (x - cx) * s, 92 - (maxY - y) * s]);
+  document.getElementById('shape').setAttribute('d', 'M' + p.map(q => q[0].toFixed(2) + ' ' + q[1].toFixed(2)).join('L') + 'Z');
+})();
+</script>
+
+<script>
+// How og.png is made: draw the same card on a 2x canvas (web fonts already loaded by the page) and hand the PNG to a local receiver.
+window.renderCard = async () => {
+  await document.fonts.load('800 76px Syne'); await document.fonts.load('500 20px "Azeret Mono"');
+  const W = 1200, H = 630, c = document.createElement('canvas'); c.width = W * 2; c.height = H * 2;
+  const x = c.getContext('2d'); x.scale(2, 2);
+  x.fillStyle = '#1b2ae8'; x.fillRect(0, 0, W, H);
+  x.fillStyle = '#f6b976'; x.textBaseline = 'top';
+  x.font = '800 44px Syne'; x.letterSpacing = '-1.3px'; x.fillText('SOBA', 64, 56);
+  x.font = '500 18px "Azeret Mono"'; x.letterSpacing = '1.4px'; x.textAlign = 'right'; x.fillStyle = 'rgba(246,185,118,.85)';
+  x.fillText('MAKERS OF INTERESTING CONSUMER GOODS', W - 64, 66);
+  x.textAlign = 'left'; x.fillStyle = '#f6b976'; x.font = '800 76px Syne'; x.letterSpacing = '-3px';
+  ['The shelf is', 'boring. We’re', 'working on it.'].forEach((l, i) => x.fillText(l, 64, 196 + i * 72));
+  x.textBaseline = 'bottom'; x.font = '500 20px "Azeret Mono"'; x.letterSpacing = '1.6px'; x.fillText('SOBADELIGHTS.COM', 64, H - 56);
+  x.font = '500 18px "Azeret Mono"'; x.letterSpacing = '1.4px'; x.textAlign = 'right'; x.fillStyle = 'rgba(246,185,118,.85)';
+  const chip = 'DELIGHT PENDING'; x.fillText(chip, W - 64, H - 56);
+  const cw = x.measureText(chip).width; x.fillStyle = '#ff6a3d'; x.beginPath(); x.arc(W - 64 - cw - 18, H - 56 - 11, 6, 0, Math.PI * 2); x.fill();
+  const d = document.getElementById('shape').getAttribute('d'), box = 360, ox = W - 64 - box, oy = 126, k = box / 100;
+  x.save(); x.translate(ox, oy); x.scale(k, k);
+  x.fillStyle = 'rgba(0,0,0,.3)'; x.beginPath(); x.ellipse(50, 93.6, 30, 2.4, 0, 0, Math.PI * 2); x.fill();
+  x.fillStyle = '#f6b976'; x.fill(new Path2D(d)); x.restore();
+  return new Promise(res => c.toBlob(res, 'image/png'));
+};
+window.postTo = async (blob, name) => { const r = await fetch('http://127.0.0.1:8766/save', { method: 'POST', headers: { 'X-Name': name, 'Content-Type': 'image/png' }, body: blob }); return r.status + ' ' + name + ' ' + blob.size + ' bytes'; };
+</script>
+</body>
+</html>
